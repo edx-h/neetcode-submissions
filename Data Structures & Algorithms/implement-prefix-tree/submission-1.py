@@ -1,0 +1,45 @@
+class Node:
+    def __init__(self, nid):
+        self.nid = nid
+        self.next = [None for _ in range(26)]
+        self.existence = False
+
+class PrefixTree:
+
+    def __init__(self):
+        self.counter = 0
+        self.root = Node(self.counter)
+
+    def insert(self, word: str) -> None:
+        cursor = self.root
+        for i, c in enumerate(word):
+            idx = ord(c) - ord("a")
+            if not cursor.next[idx]:
+                # create if not exist yet
+                self.counter += 1
+                cursor.next[idx] = Node(self.counter)
+            cursor = cursor.next[idx]
+        cursor.existence = True
+        return
+
+    def search(self, word: str) -> bool:
+        cursor = self.root
+        for c in word:
+            idx = ord(c) - ord("a")
+            if cursor.next[idx]:
+                cursor = cursor.next[idx]
+            else:
+                return False
+        
+        return cursor.existence is True
+
+    def startsWith(self, prefix: str) -> bool:
+        cursor = self.root
+        for c in prefix:
+            idx = ord(c) - ord("a")
+            if cursor.next[idx]:
+                cursor = cursor.next[idx]
+            else:
+                return False
+            
+        return True
